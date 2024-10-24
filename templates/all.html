@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Patient Forms Page</title>
+    <style>
+        /* Style modalnego okienka */
+        .modal {
+            display: none; /* Ukryty na początku */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4); /* Przyciemnione tło */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h2>All Patient Forms:</h2>
+
+<ul>
+    {% for patient in patients %}
+        <li>
+            <button onclick="showModal('{{ patient.name }}', '{{ patient.surname }}', '{{ patient.age }}', '{{ patient.gender }}', '{{ patient.blood_type }}')">
+                {{ patient.name }} {{ patient.surname }}
+            </button>
+        </li>
+    {% endfor %}
+</ul>
+
+<form action="/">
+    <input type="submit" value="ADD PATIENT">
+</form>
+
+<!-- Modalne okienko -->
+<div id="patientModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Patient Details</h2>
+        <p><strong>Name:</strong> <span id="modalName"></span></p>
+        <p><strong>Surname:</strong> <span id="modalSurname"></span></p>
+        <p><strong>Age:</strong> <span id="modalAge"></span></p>
+        <p><strong>Gender:</strong> <span id="modalGender"></span></p>
+        <p><strong>Blood Type:</strong> <span id="modalBloodType"></span></p>
+    </div>
+</div>
+
+<script>
+    // Funkcja do pokazywania modala z danymi pacjenta
+    function showModal(name, surname, age, gender, blood_type) {
+        document.getElementById('modalName').innerText = name;
+        document.getElementById('modalSurname').innerText = surname;
+        document.getElementById('modalAge').innerText = age;
+        document.getElementById('modalGender').innerText = gender;
+        document.getElementById('modalBloodType').innerText = blood_type;
+
+        // Pokazanie modala
+        document.getElementById('patientModal').style.display = 'block';
+    }
+
+    // Funkcja do zamykania modala
+    function closeModal() {
+        document.getElementById('patientModal').style.display = 'none';
+    }
+
+    // Zamknij modal, jeśli kliknięto poza nim
+    window.onclick = function(event) {
+        const modal = document.getElementById('patientModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>
